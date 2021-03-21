@@ -17,15 +17,26 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Login"),
+        title: Center(child: Text("Login")),
       ),
       body: Column(
         children: [
+          SizedBox(height: 40),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: TextField(
               keyboardType: TextInputType.emailAddress,
-              decoration: InputDecoration(hintText: 'Email'),
+              decoration: InputDecoration(
+                labelText: 'Email',
+                icon: Icon(
+                  Icons.person_outline,
+                  size: 25,
+                  color: Color(0xffA6B0BD),
+                ),
+                isCollapsed: false,
+                border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(20.0)),
+              ),
               onChanged: (value) {
                 setState(() {
                   _email = value.trim();
@@ -33,11 +44,21 @@ class _LoginScreenState extends State<LoginScreen> {
               },
             ),
           ),
+          SizedBox(height: 20),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: TextField(
               obscureText: true,
-              decoration: InputDecoration(hintText: 'Password'),
+              decoration: InputDecoration(
+                  labelText: 'Password',
+                  icon: Icon(
+                    Icons.lock,
+                    size: 25,
+                    color: Color(0xffA6B0BD),
+                  ),
+                  isCollapsed: false,
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(20.0))),
               onChanged: (value) {
                 setState(() {
                   _password = value.trim();
@@ -45,11 +66,12 @@ class _LoginScreenState extends State<LoginScreen> {
               },
             ),
           ),
+          SizedBox(height: 20),
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               // ignore: deprecated_member_use
-              RaisedButton(
+              FlatButton(
                   color: Theme.of(context).accentColor,
                   child: Text('Sign In'),
                   onPressed: () {
@@ -65,7 +87,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   onPressed: () {
                     auth.createUserWithEmailAndPassword(
                         email: _email, password: _password);
-                        Navigator.of(context).pushReplacement(
+                    Navigator.of(context).pushReplacement(
                         MaterialPageRoute(builder: (context) => HomeScreen()));
                   })
             ],
