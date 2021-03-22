@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:login_auth_firebase/src/screens/home.dart';
+import 'package:login_auth_firebase/src/screens/verify.dart';
 
 class LoginScreen extends StatefulWidget {
   LoginScreen({Key key}) : super(key: key);
@@ -75,20 +76,24 @@ class _LoginScreenState extends State<LoginScreen> {
                   color: Theme.of(context).accentColor,
                   child: Text('Sign In'),
                   onPressed: () {
-                    auth.signInWithEmailAndPassword(
-                        email: _email, password: _password);
-                    Navigator.of(context).pushReplacement(
-                        MaterialPageRoute(builder: (context) => HomeScreen()));
+                    auth
+                        .signInWithEmailAndPassword(
+                            email: _email, password: _password)
+                        .then((value) => Navigator.of(context).pushReplacement(
+                            MaterialPageRoute(
+                                builder: (context) => HomeScreen())));
                   }),
               // ignore: deprecated_member_use
               RaisedButton(
                   color: Theme.of(context).accentColor,
                   child: Text('Sign Up'),
                   onPressed: () {
-                    auth.createUserWithEmailAndPassword(
-                        email: _email, password: _password);
-                    Navigator.of(context).pushReplacement(
-                        MaterialPageRoute(builder: (context) => HomeScreen()));
+                    auth
+                        .createUserWithEmailAndPassword(
+                            email: _email, password: _password)
+                        .then((value) => Navigator.of(context).pushReplacement(
+                            MaterialPageRoute(
+                                builder: (context) => VerifyScreen())));
                   })
             ],
           )
