@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:login_auth_firebase/src/screens/home.dart';
 import 'package:login_auth_firebase/src/screens/reset.dart';
 import 'package:login_auth_firebase/src/screens/verify.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class LoginScreen extends StatefulWidget {
   LoginScreen({Key key}) : super(key: key);
@@ -76,26 +77,12 @@ class _LoginScreenState extends State<LoginScreen> {
               FlatButton(
                   color: Theme.of(context).accentColor,
                   child: Text('Sign In'),
-                  onPressed: () {
-                    auth
-                        .signInWithEmailAndPassword(
-                            email: _email, password: _password)
-                        .then((value) => Navigator.of(context).pushReplacement(
-                            MaterialPageRoute(
-                                builder: (context) => HomeScreen())));
-                  }),
+                  onPressed: () => _signin(_email, _password)),
               // ignore: deprecated_member_use
               RaisedButton(
                   color: Theme.of(context).accentColor,
                   child: Text('Sign Up'),
-                  onPressed: () {
-                    auth
-                        .createUserWithEmailAndPassword(
-                            email: _email, password: _password)
-                        .then((value) => Navigator.of(context).pushReplacement(
-                            MaterialPageRoute(
-                                builder: (context) => VerifyScreen())));
-                  })
+                  onPressed: () => _signup(_email, _password))
             ],
           ),
           Row(mainAxisAlignment: MainAxisAlignment.center, children: [
@@ -108,5 +95,31 @@ class _LoginScreenState extends State<LoginScreen> {
         ],
       ),
     );
+  }
+
+  // ignore: unused_element
+  _signin(String _email, String _password) async {
+    try {
+      await auth.signInWithEmailAndPassword(email: _email, password: _password);
+
+      //Sucessful
+
+      Navigator.of(context)
+          .push(MaterialPageRoute(builder: (context) => HomeScreen()));
+    } on FirebaseAuthException catch (error) {
+      Fluttertoast.showToast(msg: error.message, gravity: ToastGravity.TOP);
+    }
+  }
+
+  // ignore: unused_element
+  _signup(String _email, String _password) async {
+    try {
+      await auth.createUserWithEmailAndPassword(
+          email: _email, password: _password);
+      Navigator.of(context)
+          .push(MaterialPageRoute(builder: (context) => VerifyScreen()));
+    } on FirebaseAuthException catch (error) {
+      Fluttertoast.showToast(msg: error.message, gravity: ToastGravity.TOP);
+    }
   }
 }
